@@ -5,7 +5,7 @@ using System.Text;
 
 namespace checkout_kata.Model
 {
-    class Trifles : IItems
+    public class Trifles : IItems
     {
         public string ItemName { get; set; }
         public string SKU { get; set; }

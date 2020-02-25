@@ -13,11 +13,23 @@ namespace checkout_kata.Model
         public double ChocolateCount { get; set; }
         public double TrifleCount { get; set; }
         public double TotalPrice { get; set; }
-        List<IItems> ItemsInBasket { get; set; }
+        public static List<IItems> ItemsInBasket { get; set; }
+        public double AppleOfferModifier { get; set; }
+        public double ApplesFinalPrice { get; set; }
+        public double AppleUnitPrice { get; set; }
+        public double AppleOfferNumber { get; set; }
+        public double BiscuitsFinalPrice {get; set;}
+        public double BiscuitUnitPrice { get; set; }
+        public double BiscuisOfferModifier { get; set; }
+        public double BiscuitsOfferNumber { get; set; }
 
-        public Basket(List<IItems> newBasket)
+        public Basket(List<IItems> newBasket, double InitialApplesModifier, double InitialBiscuitsModifier, double AppleOfferNo, double BiscuitOfferNo)
         {
             ItemsInBasket = newBasket;
+            AppleOfferModifier = InitialApplesModifier;
+            BiscuisOfferModifier = InitialBiscuitsModifier;
+            AppleOfferNumber = AppleOfferNo;
+            BiscuitsOfferNumber = BiscuitOfferNo;
 
             CalculateItemCount();
         }
@@ -49,21 +61,21 @@ namespace checkout_kata.Model
         {
             try
             {
-                double ApplesFinalPrice = 0;
-                double offerMultiplier = 43.3333333333;
                 double unitPrice = 50;
 
-                if (AppleCount % 3 != 0)
+                if (AppleCount % AppleOfferNumber != 0)
                 {
-                    double remainder = AppleCount % 3;
+                    double remainder = AppleCount % AppleOfferNumber;
                     double numberOfDiscounts = AppleCount - remainder;
 
-                    TotalPrice += (numberOfDiscounts * offerMultiplier) + (remainder * unitPrice);
-                    
+                    TotalPrice += (numberOfDiscounts * AppleOfferModifier) + (remainder * unitPrice);
+                    TotalPrice = Math.Round(TotalPrice, 2);
+
                 }
                 else
                 {
-                    ApplesFinalPrice = AppleCount * offerMultiplier;
+                    ApplesFinalPrice = AppleCount * AppleOfferModifier;
+                    ApplesFinalPrice = Math.Round(ApplesFinalPrice, 2);
                     TotalPrice += ApplesFinalPrice;
                 }
 
@@ -80,21 +92,20 @@ namespace checkout_kata.Model
         {
             try
             {
-                double BiscuitsFinalPrice = 0;
-                double offerMultiplyer = 22.5;
                 double unitPrice = 30;
                 
-                if (BiscuitCount % 2 != 0)
+                if (BiscuitCount % BiscuitsOfferNumber != 0)
                 {
-                    double remainder = BiscuitCount % 2;
+                    double remainder = BiscuitCount % BiscuitsOfferNumber;
 
                     double numberOfDiscounts = BiscuitCount - remainder;
 
-                    TotalPrice += (numberOfDiscounts * offerMultiplyer) + (remainder * unitPrice);
+                    TotalPrice += (numberOfDiscounts * BiscuisOfferModifier) + (remainder * unitPrice);
                 }
                 else
                 {
-                    BiscuitsFinalPrice = BiscuitCount * offerMultiplyer;
+                    BiscuitsFinalPrice = BiscuitCount * BiscuisOfferModifier;
+                    BiscuitsFinalPrice = Math.Round(BiscuitsFinalPrice, 2);
                     TotalPrice += BiscuitsFinalPrice;
                 }
                 
@@ -129,10 +140,18 @@ namespace checkout_kata.Model
                         }
                     }
                 }
-                
 
-                ApplesOffers();
-                BiscuitOffers();
+                if (AppleCount != 0)
+                {
+                    ApplesOffers();
+                }
+                
+                if(BiscuitCount != 0)
+                {
+                    BiscuitOffers();
+                }
+                             
+                //TotalPrice = Math.Round(TotalPrice, 2);
 
                 return TotalPrice;
             }

@@ -14,7 +14,10 @@ namespace checkout_kata.Console
             List<Apples> myApples = new List<Apples>();
             List<Biscuit> myBiscuits = new List<Biscuit>();
             List<Chocolates> myChocolates = new List<Chocolates>();
-
+            double applesModifier = 43.3333333333;
+            double biscuitsModifier = 22.5;
+            double applesOfferNumber = 3;
+            double biscuitOfferNumber = 2;
             for (int i = 0; i < 4; i++)
             {
                 myApples.Add(new Apples());
@@ -41,7 +44,7 @@ namespace checkout_kata.Console
                 myItems.Add(chocolate);
             }
 
-            Basket myBasket = new Basket(myItems);
+            Basket myBasket = new Basket(myItems, applesModifier, biscuitsModifier, applesOfferNumber, biscuitOfferNumber);
             myBasket.CalculatePrice();
 
             System.Console.ReadLine();
